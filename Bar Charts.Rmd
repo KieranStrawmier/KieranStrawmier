@@ -1,0 +1,31 @@
+```{r}
+library(tidyverse)
+library(scales)
+```
+```{r}
+attendance <- read_csv("attendance.csv")
+```
+```{r}
+head(attendance)
+```
+now we are going to create attendance differentials 
+```{r}
+ top10 <- attendance %>% 
+  mutate(change = ((`2018` - `2013`)/`2013`)*100
+  ) %>%
+     arrange(desc(`change`)) %>%
+  top_n(10)
+  
+```
+
+now im creating a bar chart of the top 10 schools
+```{r}
+ggplot() + 
+  geom_bar(data=top10, aes(x=reorder(Institution, `change`), weight=`change`)) +
+  scale_y_continuous(labels=comma) +
+  coord_flip()
+
+```
+
+
+
